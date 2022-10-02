@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Title</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+    .el-table .warning-row {
+        background: oldlace;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+     .el-row {
+         margin-bottom: 20px;
+    }
+    .el-col {
+        border-radius: 4px;
+    }
+    .bg-purple-dark {
+        background: #99a9bf;
+    }
+    .bg-purple {
+        background: #d3dce6;
+    }
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+    .fontType{
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    }
+
+    </style>
+
+<body>
+
+<div id="app">
+    <template >
+        <el-row :gutter="20">
+            <el-col :span="6"><div class="grid-content ">
+                <div  style="font-family: Helvetica Neue , Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;font-size: large;color: #409EFF">
+                    图书信息管理系统
+                </div>
+            </div>
+            </el-col>
+            <el-col :span="6"><div class="grid-content ">
+                <el-button type="primary" round @click="addBook">
+                    新增
+                </el-button>
+            </div>
+            </el-col>
+            <el-col :span="6"><div class="grid-content ">
+            </div>
+            </el-col>
+            <el-col :span="6"><div class="grid-content bg-purple">
+                <div style="text-align: center;font-family: Helvetica Neue , Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;font-size: large;color: #409EFF">
+                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                    管理员
+                </div>
+            </div></el-col>
+        </el-row>
+        <el-dialog title="书籍信息" :visible.sync="dialogAddFormVisible">
+            <el-form :model="addFormData">
+                <el-form-item label="书名"
+                              :label-width="formLabelWidth"
+                              :rules="[
+      { required: true, message: '书名不能为空'}  ]">
+
+                    <el-input  autocomplete="off" v-model="addFormData.bookName"></el-input>
+                </el-form-item>
+
+                <el-form-item label="售价"
+                              :label-width="formLabelWidth"
+                              :rules="[
+                                       { required: true, message: '售价不能为空'},
+                                       {type:'number',message: '售价必须为数字值'}
+                                       ]">
+                    <el-input  autocomplete="off" v-model="addFormData.bookMoney"></el-input>
+                </el-form-item>
+                <el-form-item label="描述"
+                              :label-width="formLabelWidth"
+                              :rules="[
+                                       { required: true, message: '描述不能为空'}
+                                       ]">
+                    <el-input type="textarea" autocomplete="off" v-model="addFormData.bookDescription"></el-input>
+                </el-form-item>
+                <el-form-item label="分类" :label-width="formLabelWidth">
+                    <el-input  autocomplete="off" v-model="addFormData.bookClassify"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="cancelAddBook">取消</el-button>
+                <el-button type="primary" @click="addBookData">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-table
+                :data="books"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+            <el-table-column
+                    prop="id"
+                    label="ID"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="bookName"
+                    label="书名"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="bookMoney"
+                    label="售价"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="bookDescription"
+                    label="描述"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="bookClassify"
+                    label="分类"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    align="center">
+                <template slot-scope="scope">
+                <el-button type="primary" @click="editBook(scope.row)">编辑</el-button>
+                <el-button type="danger"   @click="handleDelete(scope.row)">删除 </el-button>
+
+
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <div class="add_form">
+            <!--        <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
+<!--
+editor form 编辑表单内容
+
+-->
+            <el-dialog title="书籍信息" :visible.sync="dialogFormVisible">
+                <el-form :model="formData">
+                    <el-button type="primary" @click="test">编辑</el-button>
+                    <el-form-item label="书名" :label-width="formLabelWidth" >
+
+                        <el-input  autocomplete="off" v-model="formData.bookName"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="售价" :label-width="formLabelWidth" >
+                        <el-input  autocomplete="off" v-model="formData.bookMoney"></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述" :label-width="formLabelWidth" >
+                        <el-input type="textarea" autocomplete="off" v-model="formData.bookDescription"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分类" :label-width="formLabelWidth" >
+                        <el-input  autocomplete="off" v-model="formData.bookClassify"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="cancelUpdate">取 消</el-button>
+                    <el-button type="primary" @click="updateBook">确 定</el-button>
+                </div>
+            </el-dialog>
+        </div>
+    </template>
+
+</div>
+
+
+<script>
+    new Vue({
+        el:"#app",
+        data() {
+            return {
+                books:[],
+                dialogFormVisible: false,
+                dialogAddFormVisible:false,
+                formData: {
+                    bookName:"",
+                    bookMoney:"",
+                    bookDescription:"",
+                    bookClassify:"",
+                    id:""
+                },
+                addFormData: {
+                    bookName:"",
+                    bookMoney:"",
+                    bookDescription:"",
+                    bookClassify:"",
+                    id:""
+                },
+                formLabelWidth: '120px'
+            }
+        },
+        methods: {
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex%2 === 0) {
+                    return 'warning-row';
+                } else if (rowIndex%2 === 1) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            editBook(row){
+                var _this = this;
+              axios.get("http://localhost:80/bookController_Web/books/"+row.id).then(function (resp){
+                  _this.formData = resp.data;
+                  console.log(_this.formData);
+                  _this.dialogFormVisible=true;
+              })
+            },
+            handleDelete(row) {
+                var _this = this;
+                axios.delete("http://localhost:80/bookController_Web/books/"+row.id).then(function (resp){
+                    if(resp.data === 1){
+                        _this.$message({
+                            message: '成功删除',
+                            type: 'success'
+                        });
+                        _this.visible=false;
+                        _this.selectAll();
+                    }else {
+                        _this.$message.error("删除失败");
+                        _this.visible=false;
+                        _this.selectAll();
+                    }
+                })
+            },
+            test() {
+                this.dialogFormVisible = false;
+            },
+            selectAll(){
+                var _this  = this;
+                axios.get("http://localhost:80/bookController_Web/books").then(function (resp){
+                    _this.books = resp.data;
+                })
+            },
+            updateBook(){
+                var _this = this;
+                axios.put("http://localhost:80/bookController_Web/books",_this.formData).then(function (resp){
+                    if(resp.data === 1){
+                        _this.$message({
+                            message: '修改成功',
+                            type: 'success'
+                        });
+                        _this.dialogFormVisible = false;
+                        _this.selectAll();
+                    }
+                    else{
+                        _this.$message.error('出错了');
+                    }
+
+                })
+            },
+            cancelUpdate(){
+                this.$message({
+                    type :'info',
+                    message: '成功放弃修改'
+                })
+                this.dialogFormVisible = false;
+            },
+            cancelAddBook(){
+                this.dialogAddFormVisible = false;
+                this.addFormData={};
+            },
+            addBook(){
+                this.dialogAddFormVisible = true;
+            },
+            addBookData(){
+                var _this = this;
+                axios.post("http://localhost:80/bookController_Web/books",_this.addFormData).then(function (resp){
+                    _this.dialogAddFormVisible=false;
+                    if(resp.data===1){
+                        _this.$message(
+                            {
+                                type:"success",
+                                message:"添加成功"
+                            })
+                    }
+                    else {
+                        _this.$message(
+                            {
+                                type:"error",
+                                message:"业务繁忙请稍后再试"
+                            })
+                    }
+                    _this.addFormData = {};
+                    _this.selectAll();
+                })
+            }
+        },
+
+        mounted() {
+            var _this = this;
+            axios.get("http://localhost:80/bookController_Web/books").then(function (resp){
+                _this.books = resp.data;
+            })
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>

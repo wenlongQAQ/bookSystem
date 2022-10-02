@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="bookController:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts/bookController_Web</output-path>
+    <root id="archive" name="bookController_Web.war">
+      <element id="artifact" artifact-name="bookController:Web exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.9" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.9" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
