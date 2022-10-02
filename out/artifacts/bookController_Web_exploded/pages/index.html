@@ -64,8 +64,12 @@
                 </el-button>
             </div>
             </el-col>
-            <el-col :span="6"><div class="grid-content ">
-            </div>
+            <el-col :span="6">
+                <div class="grid-content ">
+                <el-input placeholder="请输入书名" style="width: 180px" size="medium" v-model="searchBookName" >
+                </el-input>
+                    <el-button type="primary" icon="el-icon-search" @click="searchByName">搜索</el-button>
+                 </div>
             </el-col>
             <el-col :span="6"><div class="grid-content bg-purple">
                 <div style="text-align: center;font-family: Helvetica Neue , Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;font-size: large;color: #409EFF">
@@ -74,14 +78,23 @@
                 </div>
             </div></el-col>
         </el-row>
+
+
+
+
+
+
+
+
         <el-dialog title="书籍信息" :visible.sync="dialogAddFormVisible">
             <el-form :model="addFormData">
                 <el-form-item label="书名"
                               :label-width="formLabelWidth"
-                              :rules="[
-      { required: true, message: '书名不能为空'}  ]">
+                              :rules="[{required: true,
+                                       message: '书名不能为空'}
+                               ]">
 
-                    <el-input  autocomplete="off" v-model="addFormData.bookName"></el-input>
+                    <el-input  autocomplete="off" v-model="addFormData.bookName"  maxlength="10" show-word-limit></el-input>
                 </el-form-item>
 
                 <el-form-item label="售价"
@@ -90,17 +103,17 @@
                                        { required: true, message: '售价不能为空'},
                                        {type:'number',message: '售价必须为数字值'}
                                        ]">
-                    <el-input  autocomplete="off" v-model="addFormData.bookMoney"></el-input>
+                    <el-input  autocomplete="off" v-model="addFormData.bookMoney"  maxlength="5" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="描述"
                               :label-width="formLabelWidth"
                               :rules="[
                                        { required: true, message: '描述不能为空'}
                                        ]">
-                    <el-input type="textarea" autocomplete="off" v-model="addFormData.bookDescription"></el-input>
+                    <el-input type="textarea" autocomplete="off" v-model="addFormData.bookDescription" maxlength="100" show-word-limit> </el-input>
                 </el-form-item>
                 <el-form-item label="分类" :label-width="formLabelWidth">
-                    <el-input  autocomplete="off" v-model="addFormData.bookClassify"></el-input>
+                    <el-input  autocomplete="off" v-model="addFormData.bookClassify"  maxlength="10" show-word-limit></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -109,10 +122,18 @@
             </div>
         </el-dialog>
 
+
+
+
+
+
+<!--        初始化展示 目前数据库中所有的图书   -->
+        <el-empty description="描述文字">
         <el-table
                 :data="books"
                 style="width: 100%"
                 :row-class-name="tableRowClassName">
+
             <el-table-column
                     prop="id"
                     label="ID"
@@ -144,17 +165,18 @@
                 <template slot-scope="scope">
                 <el-button type="primary" @click="editBook(scope.row)">编辑</el-button>
                 <el-button type="danger"   @click="handleDelete(scope.row)">删除 </el-button>
-
-
                 </template>
+
             </el-table-column>
         </el-table>
+        </el-empty>
+
+
 
         <div class="add_form">
             <!--        <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>-->
 <!--
-editor form 编辑表单内容
-
+editor form 修改图书内容的表单
 -->
             <el-dialog title="书籍信息" :visible.sync="dialogFormVisible">
                 <el-form :model="formData">
@@ -181,7 +203,6 @@ editor form 编辑表单内容
             </el-dialog>
         </div>
     </template>
-
 </div>
 
 
@@ -191,6 +212,7 @@ editor form 编辑表单内容
         data() {
             return {
                 books:[],
+                searchBookName:"",
                 dialogFormVisible: false,
                 dialogAddFormVisible:false,
                 formData: {
@@ -305,6 +327,21 @@ editor form 编辑表单内容
                     _this.addFormData = {};
                     _this.selectAll();
                 })
+            },
+            searchByName() {
+                var _this = this;
+                if (_this.searchBookName == ""){
+                    this.selectAll();
+                } else {
+                    axios.get("http://localhost:80/bookController_Web/books/name/" + _this.searchBookName).then(function (resp) {
+                        _this.books = resp.data;
+                        _this.$message({
+                            type: "success",
+                            message: "查询完成"
+                        })
+                        console.log(_this.formData);
+                    })
+                }
             }
         },
 

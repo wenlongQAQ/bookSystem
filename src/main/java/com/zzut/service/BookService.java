@@ -20,4 +20,5 @@ public interface BookService {
 
     Integer deleteById(@Param("id") Integer id);
     Integer addOneBook(Book book);
+    List<Book> selectByName(String Name);
 }

@@ -38,4 +38,15 @@ public interface BookDao {
 
     @Insert("insert into book(book_name,book_money,book_description,book_classify) values(#{bookName},#{bookMoney},#{bookDescription},#{bookClassify})")
     Integer addOneBook(Book book);
+    @Results(
+            {
+                    @Result(property = "bookName",column = "book_name"),
+                    @Result(property = "bookMoney",column = "book_money"),
+                    @Result(property = "bookDescription",column = "book_description"),
+                    @Result(property = "bookClassify",column = "book_classify"),
+
+            }
+    )
+    @Select("select * from book where book_name like '%${name}%'")
+    List<Book> selectByName(@Param("name") String name);
 }

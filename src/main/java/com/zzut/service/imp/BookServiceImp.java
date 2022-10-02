@@ -42,5 +42,10 @@ public class BookServiceImp implements BookService {
         return bookdao.addOneBook(book);
     }
 
+    @Override
+    public List<Book> selectByName(String Name) {
+        return bookdao.selectByName(Name);
+    }
+
 
 }

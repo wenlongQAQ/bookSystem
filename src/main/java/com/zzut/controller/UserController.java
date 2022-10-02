@@ -2,7 +2,6 @@ package com.zzut.controller;
 
 import com.zzut.domain.Book;
 import com.zzut.service.BookService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +18,12 @@ public class UserController {
         Book book = bookService.selectById(id);
         System.out.println(book);
         return book;
+    }
+    @GetMapping(value = "/name/{name}")
+    public List<Book> selectByName(@PathVariable String name){
+        System.out.println(name);
+        List<Book> books = bookService.selectByName(name);
+        return books;
     }
     @GetMapping()
     public List<Book> selectAll(){

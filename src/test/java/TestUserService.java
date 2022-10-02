@@ -14,11 +14,12 @@ public class TestUserService {
     private BookService bookService;
 @Test
     public void testUserServiceImp() {
-    System.out.println(bookService.deleteById(3));
-    System.out.println(bookService.addOneBook(new Book("java核心技术", 66, null, "计算法算法书",null)));
+//    System.out.println(bookService.deleteById(3));
+//    System.out.println(bookService.addOneBook(new Book("java核心技术", 66, null, "计算法算法书",null)));
 //    System.out.println(bookService.selectById(2));
 //    bookService.updateBook(new Book("算法图解1", 66, "这是一本较好的算法入门书", "计算法算法书", 1));
 //    List<Book> books = bookService.selectAll();
 //    System.out.println(books);
+    System.out.println(bookService.selectByName("java"));
 }
 }
