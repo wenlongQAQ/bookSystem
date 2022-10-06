@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/books" )
-public class UserController {
+public class BookController {
     @Autowired
     private BookService bookService;
     @GetMapping("/{id}")
@@ -27,13 +27,12 @@ public class UserController {
     }
     @GetMapping()
     public List<Book> selectAll(){
-
         List<Book> books = bookService.selectAll();
         System.out.println(books);
         return books;
     }
     @PutMapping()
-    public Integer updateByid(@RequestBody Book book){
+    public Integer updateById(@RequestBody Book book){
         return bookService.updateBook(book);
     }
     @DeleteMapping("/{id}")

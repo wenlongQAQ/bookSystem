@@ -1,6 +1,7 @@
 import com.zzut.config.SpringConfig;
-import com.zzut.domain.Book;
+import com.zzut.domain.User;
 import com.zzut.service.BookService;
+import com.zzut.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestUserService {
     @Autowired
     private BookService bookService;
+    @Autowired
+    private UserService userService;
 @Test
     public void testUserServiceImp() {
 //    System.out.println(bookService.deleteById(3));
@@ -20,6 +23,10 @@ public class TestUserService {
 //    bookService.updateBook(new Book("算法图解1", 66, "这是一本较好的算法入门书", "计算法算法书", 1));
 //    List<Book> books = bookService.selectAll();
 //    System.out.println(books);
-    System.out.println(bookService.selectByName("java"));
+    User user = new User();
+    user.setUserName("2082841288");
+    user.setUserPassword("Liwenlong.0328");
+    User b = userService.confirmUserPassword(user);
+    System.out.println(b);
 }
 }

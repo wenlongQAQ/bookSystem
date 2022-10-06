@@ -39,32 +39,40 @@
                 </el-input>
             </el-form-item>
                 <el-form-item label="密码:">
-                    <el-input v-model="userData.userPassword" style="width: 60%">
+                    <el-input type="password" v-model="userData.userPassword" style="width: 60%">
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="success" @click="registe">注册</el-button>
+<!--                    <el-button type="success" @click="registe">注册</el-button>-->
                     <el-button type="primary" @click="userLogin">登录</el-button>
                 </el-form-item>
         </el-form>
         </el-main>
     </el-container>
-
-
-
 </div>
-
-
 <script>
     new Vue({
         el:"#app",
         data(){
             return{
-                userData:[]
+                userData:{
+                    userName:"",
+                    userPassword:"",
+                    userIdentity:""
+                }
             }
         },
+        methods: {
+            userLogin(){
+                var _this = this;
+                console.log(this.userData);
+                axios.post("http://localhost:80/bookController_Web/users",_this.userData).then(function (resp){
+                    console.log(_this.userData);
+                    window.location.href="http://localhost:80/bookController_Web/pages/rootUser.html";
+                });
+            }
+        }
     })
 </script>
-
 </body>
 </html>
