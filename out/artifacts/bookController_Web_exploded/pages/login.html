@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<style>
+    .el-main {
+        background-color: #E9EEF3;
+        color: #333;
+        text-align: center;
+        line-height: 160px;
+        width: 50%;
+        margin:  auto;
+    }
+    .el-header, .el-footer {
+        background-color: #B3C0D1;
+        color: #333;
+        text-align: center;
+        line-height: 60px;
+    }
+
+</style>
+<body>
+
+<div id="app">
+
+    <el-container>
+        <el-header style="text-align: center;font-family: Helvetica Neue , Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;font-size: large;color: #409EFF">欢迎登入天南图书管理系统</el-header>
+        <el-main >
+            <el-form ref="form" :model="userData" align="center" label-width="50px">
+            <el-form-item label="账号:" >
+                <el-input v-model="userData.userName" style="width: 60%">
+                </el-input>
+            </el-form-item>
+                <el-form-item label="密码:">
+                    <el-input type="password" v-model="userData.userPassword" style="width: 60%">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+<!--                    <el-button type="success" @click="registe">注册</el-button>-->
+                    <el-button type="primary" @click="userLogin">登录</el-button>
+                </el-form-item>
+        </el-form>
+        </el-main>
+    </el-container>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data(){
+            return{
+                userData:{
+                    userName:"",
+                    userPassword:"",
+                    userIdentity:""
+                }
+            }
+        },
+        methods: {
+            userLogin(){
+                var _this = this;
+                console.log(this.userData);
+                axios.post("http://localhost:80/bookController_Web/users",_this.userData).then(function (resp){
+                    console.log(_this.userData);
+                    window.location.href="http://localhost:80/bookController_Web/pages/rootUser.html";
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>
