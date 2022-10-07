@@ -15,7 +15,7 @@
     <el-container>
         <el-header style="text-align: center;font-family: Helvetica Neue , Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;font-size: large;color: #409EFF">欢迎登入天南图书管理系统</el-header>
         <el-main >
-            <el-form ref="form" :model="registerData" align="center" label-width="50px">
+            <el-form ref="form" :model="registerData" align="center" label-width="150px">
                 <el-form-item label="账号:" >
                     <el-input v-model="registerData.userName" style="width: 60%" maxlength="11" show-word-limit>
                     </el-input>
@@ -25,7 +25,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item label="请确认你的密码:">
-                    <el-input type="password" label-width="200px" maxlength="22" show-word-limit prefix-icon="el-icon-lock" v-model="checkPassword" style="width: 60%" show-password>
+                    <el-input type="password" maxlength="22" show-word-limit prefix-icon="el-icon-lock" v-model="checkPassword" style="width: 60%" show-password>
                     </el-input>
                 </el-form-item>
                 <el-form-item>
