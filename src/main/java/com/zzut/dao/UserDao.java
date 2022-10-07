@@ -1,10 +1,7 @@
 package com.zzut.dao;
 
 import com.zzut.domain.User;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 public interface UserDao {
     @Select("select * from userdata where user_name = #{userName} and user_password = #{userPassword}")
@@ -16,4 +13,6 @@ public interface UserDao {
     }
     )
     User getUserData(User user);
+    @Insert("insert into userdata(id,user_name,user_password,identity ) values(null,#{userName},#{userPassword},'user')")
+    Integer addUser(User user);
 }

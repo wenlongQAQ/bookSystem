@@ -16,4 +16,10 @@ public class UserServiceImp implements UserService {
         User userData = userDao.getUserData(user);
         return userData;
     }
+
+    @Override
+    public Integer addUser(User user) {
+        Integer code = userDao.addUser(user);
+        return code;
+    }
 }

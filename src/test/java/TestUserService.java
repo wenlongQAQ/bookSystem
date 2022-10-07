@@ -24,9 +24,9 @@ public class TestUserService {
 //    List<Book> books = bookService.selectAll();
 //    System.out.println(books);
     User user = new User();
-    user.setUserName("2082841288");
-    user.setUserPassword("Liwenlong.0328");
-    User b = userService.confirmUserPassword(user);
-    System.out.println(b);
+    user.setUserName("3189927657");
+    user.setUserPassword("weiwenhua.0");
+//    User b = userService.confirmUserPassword(user);
+    userService.addUser(user);
 }
 }

@@ -16,5 +16,10 @@ public class UserController {
         User user1 = userService.confirmUserPassword(user);
         return user1;
     }
+    @PostMapping("/register")
+    public Integer userRegister(@RequestBody User user){
+        Integer code = userService.addUser(user);
+        return code;
+    }
 
 }
