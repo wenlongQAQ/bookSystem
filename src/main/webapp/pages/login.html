@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--    TODO 更新了新的版本号 依然没有解决axios.post不是方法的问题 等到 10.8 再做调试 -->
+
+    <script src="https://unpkg.com/axios@1.0.0/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <!-- 引入组件库 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <style>
@@ -39,7 +41,7 @@
                 </el-input>
             </el-form-item>
                 <el-form-item label="密码:">
-                    <el-input type="password" v-model="userData.userPassword" style="width: 60%">
+                    <el-input type="password" prefix-icon="el-icon-lock" v-model="userData.userPassword" style="width: 60%" show-password>
                     </el-input>
                 </el-form-item>
                 <el-form-item>
@@ -64,12 +66,11 @@
         },
         methods: {
             userLogin(){
-                var _this = this;
-                console.log(this.userData);
+
                 axios.post("http://localhost:80/bookController_Web/users",_this.userData).then(function (resp){
-                    console.log(_this.userData);
                     window.location.href="http://localhost:80/bookController_Web/pages/rootUser.html";
                 });
+
             }
         }
     })
